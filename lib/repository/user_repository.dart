@@ -1,4 +1,4 @@
-import 'package:flutter_mvvm/data/RoomDatabase.dart';
+import 'package:flutter_mvvm/data/db/RoomDatabase.dart';
 import 'package:flutter_mvvm/model/User.dart';
 
 class UserRepository {

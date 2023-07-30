@@ -1,13 +1,12 @@
 // signup_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm/data/RoomDatabase.dart';
+import 'package:flutter_mvvm/data/db/RoomDatabase.dart';
 import 'package:flutter_mvvm/model/User.dart';
 import 'package:flutter_mvvm/repository/user_repository.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static const routeName = '/signupscreen';
 
   final UserRepository userRepository = UserRepository(AppDatabase());
 

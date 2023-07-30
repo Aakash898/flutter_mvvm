@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm/data/RoomDatabase.dart';
+import 'package:flutter_mvvm/data/db/RoomDatabase.dart';
 import 'package:flutter_mvvm/repository/user_repository.dart';
 import 'package:flutter_mvvm/view/screens/register/register_screen.dart';
+import 'package:flutter_mvvm/view_model/auth_view_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   final UserRepository userRepository = UserRepository(AppDatabase());
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  LoginScreen({Key? key}) : super(key: key);
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    // final authViewModel = Provider.of<AuthViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: Padding(
@@ -34,29 +43,39 @@ class LoginScreen extends StatelessWidget {
               child: InkWell(
                   child: const Text('Forget password?'),
                   onTap: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(SignUpScreen.routeName);
+                    /*Navigator.of(context)
+                        .pushReplacementNamed(SignUpScreen.routeName);*/
                   }),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                final username = usernameController.text;
-                final password = passwordController.text;
+            if (_isLoading)
+              const CircularProgressIndicator()
+            else
+              ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    _isLoading = true;
+                  });
 
-                if (username.isNotEmpty && password.isNotEmpty) {
-                  final user =
-                      await userRepository.findUserByUsername(username);
-                  if (user != null && user.password == password) {
-                    Fluttertoast.showToast(msg: 'Login Successfully');
-                  } else {
-                    Fluttertoast.showToast(msg: 'Invalid Creds');
+                  final emailController = usernameController.text;
+                  final passController = passwordController.text;
+
+                  if(emailController.isEmpty){
+                    Fluttertoast.showToast(msg: "Email should not be null");
+                  }else if(passController.isEmpty){
+                    Fluttertoast.showToast(msg: "password should not be null");
+                  }else{
+                    Map data = {
+                      "email": emailController.toString(),
+                      "password": passController.toString()
+                    };
+                    // await authViewModel.loginApi(data, context);
+                    setState(() {
+                      _isLoading = false;
+                    });
                   }
-                } else {
-                  // Handle invalid input
-                }
-              },
-              child: const Text('Login'),
-            ),
+                },
+                child: const Text('Login'),
+              ),
           ],
         ),
       ),
