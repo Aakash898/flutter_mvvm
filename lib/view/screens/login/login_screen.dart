@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final authViewModel = Provider.of<AuthViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -68,7 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       "email": emailController.toString(),
                       "password": passController.toString()
                     };
-                    // await authViewModel.loginApi(data, context);
+                    final authViewModel = Provider.of<AuthViewModel>(context);
+
+                    await authViewModel.loginApi(data, context);
                     setState(() {
                       _isLoading = false;
                     });

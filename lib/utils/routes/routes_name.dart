@@ -1,6 +1,6 @@
 class RoutesName {
   //Names should be unique
-  static const String login = "login_screen";
-  static const String home = "home_screen";
-  static const String register = "signup_screen";
+  static const String login = "/loginScreen";
+  static const String home = "/homeScreen";
+  static const String register = "/signupScreen";
 }
